@@ -1,0 +1,46 @@
+import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Textarea } from "@/components/ui/textarea"; import { Input } from "@/components/ui/input"; import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+export default function JournalingApp() { const [entries, setEntries] = useState([]); const [text, setText] = useState(""); const [sharedIdeas, setSharedIdeas] = useState([ "Write about your happiest memory.", "Describe your perfect day.", "What are you grateful for today?" ]);
+const addEntry = () => { if (text.trim() !== "") { setEntries([{ text, date: new Date().toLocaleString() }, ...entries]); setText(""); } };
+return (
+My Journal
+Journal Shared Ideas
+   <TabsContent value="journal">
+      <Card className="mb-4">
+        <CardContent className="space-y-4 pt-6">
+          <Textarea
+            placeholder="Write your thoughts..."
+            className="min-h-[120px]"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <Button onClick={addEntry}>Add Entry</Button>
+        </CardContent>
+      </Card>
+
+      <div className="space-y-4">
+        {entries.map((entry, index) => (
+          <Card key={index}>
+            <CardContent className="py-4">
+              <div className="text-sm text-gray-500 mb-1">{entry.date}</div>
+              <p>{entry.text}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </TabsContent>
+
+    <TabsContent value="ideas">
+      <div className="grid gap-4">
+        {sharedIdeas.map((idea, i) => (
+          <Card key={i}>
+            <CardContent className="py-4">
+              <p className="font-medium">{idea}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </TabsContent>
+  </Tabs>
+</main>
+
+);
